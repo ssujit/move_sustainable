@@ -53,6 +53,60 @@ def data_explorer():
     st.sidebar.write("Write the relevant text about what this page is for")
     st.write("This is where you can learn more about the Mobility Explorer.")
     # Add more content for the about page as needed
+    cities = ct_boundary.city.values
+    city = st.sidebar.selectbox('Select city', cities)
+    city = st.sidebar.checkbox(f'check {city} city', key=f'city_{city}')
+    
+    m = leaf.Map(
+        layers_control=True,
+        draw_control=False,
+        measure_control=False,
+        fullscreen_control=False,
+        )
+    m.add_basemap('CartoDB.DarkMatter')
+    m.add_gdf(
+        gdf=wk_am,
+        zoom_to_layer=False,
+        layer_name='sat_am',
+        info_mode='on_click',
+        style={'color': '#7fcdbb', 'fillOpacity': 0.3, 'weight': 0.8},
+        )
+    m.add_gdf(
+        gdf=wk_pm,
+        zoom_to_layer=False,
+        layer_name='sat_am',
+        info_mode='on_click',
+        style={'color': '#7fcdbb', 'fillOpacity': 0.3, 'weight': 0.8},
+        )
+    m.add_gdf(
+        gdf=sat_am,
+        zoom_to_layer=False,
+        layer_name='sat_am',
+        info_mode='on_click',
+        style={'color': '#7fcdbb', 'fillOpacity': 0.3, 'weight': 0.8},
+        )
+    m.add_gdf(
+        gdf=sat_pm,
+        zoom_to_layer=False,
+        layer_name='sat_am',
+        info_mode='on_click',
+        style={'color': '#7fcdbb', 'fillOpacity': 0.3, 'weight': 0.8},
+        )
+    m.add_gdf(
+        gdf=sun_am,
+        zoom_to_layer=False,
+        layer_name='sat_am',
+        info_mode='on_click',
+        style={'color': '#7fcdbb', 'fillOpacity': 0.3, 'weight': 0.8},
+        )
+    m.add_gdf(
+        gdf=sun_pm,
+        zoom_to_layer=False,
+        layer_name='sat_am',
+        info_mode='on_click',
+        style={'color': '#7fcdbb', 'fillOpacity': 0.3, 'weight': 0.8},
+        )
+    m.to_streamlit(600, 600)
 
 
 def page_compare():
