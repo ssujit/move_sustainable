@@ -175,5 +175,3 @@ with col2:
         ylabel='pti', xlabel='stattistics')
     ax.get_xaxis().set_ticklabels([])
     stats = st.pyplot(fig)
-
-    
