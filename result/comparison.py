@@ -106,7 +106,7 @@ with col1:
         style = {'color': '#225ea8', 'weight': 1.5},
         )
     
-    m1_streamlit = m1.to_streamlit(450, 400)
+    m1.to_streamlit(450, 400)
 
 with col2:
     st.subheader('During Afternoon')
@@ -158,7 +158,7 @@ with col2:
         style = {'color': '#225ea8', 'weight': 1.5},
         )
     
-    m2_streamlit = m1.to_streamlit(450, 400)
+    m2.to_streamlit(450, 400)
 
 with col1:
     fig, ax = plt.subplots()
