@@ -4,7 +4,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import leafmap.foliumap as leaf
 
-url = 'https://raw.github.com/ssujit/mobility_explorer/main/data/'
+url = 'https://raw.github.com/Sukanto54cl/mobility_explorer/main/data/'
 
 wkam = 'wkamo_hdn.gpkg'
 wkpm = 'wkpmo_hdn.gpkg'
@@ -12,7 +12,7 @@ satam = 'satamo_hdn.gpkg'
 satpm = 'satpmo_hdn.gpkg'
 sunam = 'sunamo_hdn.gpkg'
 sunpm = 'sunamo_hdn.gpkg'
-ct = 'ct_monitor.gpkg'
+ct = 'city_monitor.gpkg'
 cen = 'ct_centroids.gpkg'
 stat = 'hilden_stat.csv'
 morning = 'morning_time.csv'
@@ -24,7 +24,7 @@ sat_am = gpd.read_file(f'{url}{satam}')
 sat_pm = gpd.read_file(f'{url}{satpm}')
 sun_am = gpd.read_file(f'{url}{sunam}')
 sun_pm = gpd.read_file(f'{url}{sunpm}')
-ct = gpd.read_file(f'{url}{ct}')
+ct_boundary = gpd.read_file(f'{url}{ct}')
 ct_cen = gpd.read_file(f'{url}{cen}')
 stat_df = pd.read_csv(f'{url}{stat}')
 morning_df = pd.read_csv(f'{url}{morning}')
@@ -49,12 +49,12 @@ with col2:
     time = st.selectbox('Afternoon', noon)
 
 with col1:
-    cities = ct.city.values
+    cities = ct_boundary.city.values
     city = st.selectbox('Select city 1', cities)
     city_1 = st.sidebar.checkbox(f'check {city} city', key=f'city_1_{city}')
     city_stat = stat_df[stat_df['city'] == city]
 with col2:
-    cities = ct.city.values
+    cities = ct_boundary.city.values
     city = st.selectbox('Select city 2', cities)
     city_2 = st.sidebar.checkbox(f'check {city} city', key=f'city_2_{city}')
 
@@ -92,13 +92,13 @@ with col1:
     
     if city_1:
         m1.add_gdf(
-            gdf = ct,
+            gdf = ct_boundary,
             zoom_to_layer = False,
             layer_name = cities,
             info_mode = None,
             style = {'color': '#225ea8', 'weight': 1.5},
             )
-    selected_city = ct[ct['city'] == city]
+    selected_city = ct_boundary[ct_boundary['city'] == city]
     
     m1.add_gdf(
         gdf = selected_city,
@@ -108,7 +108,7 @@ with col1:
         style = {'color': '#225ea8', 'weight': 1.5},
         )
     
-    m1.to_streamlit(450, 400)
+    m1_streamlit = m1.to_streamlit(450, 400)
 
 with col2:
     st.subheader('During Afternoon')
@@ -144,13 +144,13 @@ with col2:
     
     if city_2:
         m2.add_gdf(
-            gdf = ct,
+            gdf = ct_boundary,
             zoom_to_layer = False,
             layer_name = cities,
             info_mode = None,
             style = {'color': '#225ea8', 'weight': 1.5},
             )
-    selected_city = ct[ct['city'] == city]
+    selected_city = ct_boundary[ct_boundary['city'] == city]
     
     m2.add_gdf(
         gdf = selected_city,
@@ -160,7 +160,7 @@ with col2:
         style = {'color': '#225ea8', 'weight': 1.5},
         )
     
-    m2.to_streamlit(450, 400)
+    m2_streamlit = m2.to_streamlit(450, 400)
 
 with col1:
     fig, ax = plt.subplots()
