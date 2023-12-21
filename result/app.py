@@ -55,7 +55,7 @@ def data_explorer():
     # Add more content for the about page as needed
     cities = ct_boundary.city.values
     city = st.sidebar.selectbox('Select city', cities)
-    city = st.sidebar.checkbox(f'check {city} city', key=f'city_{city}')
+    check = st.sidebar.checkbox(f'check {city} city', key=f'city_{city}')
     
     m = leaf.Map(
         layers_control=True,
