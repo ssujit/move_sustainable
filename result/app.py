@@ -106,6 +106,24 @@ def data_explorer():
         info_mode='on_click',
         style={'color': '#7fcdbb', 'fillOpacity': 0.3, 'weight': 0.8},
         )
+    if city:
+        m.add_gdf(
+            gdf=ct_boundary,
+            zoom_to_layer=False,
+            layer_name='cities',
+            info_mode=None,
+            style={'color': '#225ea8', 'weight': 1.5},
+        )
+
+    selected_gdf = ct_boundary[ct_boundary['city'] == city]
+
+    m.add_gdf(
+        gdf=selected_gdf,
+        layer_name='selected',
+        zoom_to_layer=True,
+        info_mode=None,
+        style={'color': 'yellow', 'fill': None, 'weight': 2}
+     )
     m.to_streamlit(600, 600)
 
 
