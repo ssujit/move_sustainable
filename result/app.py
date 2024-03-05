@@ -1,38 +1,21 @@
 import streamlit as st
 import geopandas as gpd
-import pandas as pd
-import matplotlib.pyplot as plt
 import leafmap.foliumap as leaf
+import plotly.graph_objects as go
 
+# github data url
 url = 'https://raw.github.com/ssujit/move_sustainable/main/data/'
 
-wkam = 'wkamo_hdn.gpkg'
-wkpm = 'wkpmo_hdn.gpkg'
-satam = 'satamo_hdn.gpkg'
-satpm = 'satpmo_hdn.gpkg'
-sunam = 'sunamo_hdn.gpkg'
-sunpm = 'sunamo_hdn.gpkg'
-ct = 'city_monitor.gpkg'
-cen = 'ct_centroids.gpkg'
-stat = 'hilden_stat.csv'
-morning = 'morning_time.csv'
-noon = 'noon_time.csv'
+# data read and load
+pti_data = 'aoi.geojson'
+ct_poly = 'city.geojson'
 
+area = gpd.read_file(f'{url}{pti_data}')
+ct_boundary = gpd.read_file(f'{url}{ct_poly}')
 
-wk_am = gpd.read_file(f'{url}{wkam}')
-wk_pm = gpd.read_file(f'{url}{wkpm}')
-sat_am = gpd.read_file(f'{url}{satam}')
-sat_pm = gpd.read_file(f'{url}{satpm}')
-sun_am = gpd.read_file(f'{url}{sunam}')
-sun_pm = gpd.read_file(f'{url}{sunpm}')
-ct_cen = gpd.read_file(f'{url}{cen}')
-ct_boundary = gpd.read_file(f'{url}{ct}')
-stat_df = pd.read_csv(f'{url}{stat}')
-morning_df = pd.read_csv(f'{url}{morning}')
-noon_df = pd.read_csv(f'{url}{noon}')
+st.set_page_config(page_title='Mobility Explorer', page_icon=":globe_with_meridians:", layout='wide')
+st.markdown('<style>div.block-container{padding-top:1rem;}</style>', unsafe_allow_html=True)
 
-
-# Page functions
 def page_about():
     st.title('Home')
     st.write("Welcome to Home Page!")
@@ -53,116 +36,117 @@ def data_explorer():
     st.sidebar.write("Write the relevant text about what this page is for")
     st.write("This is where you can learn more about the Mobility Explorer.")
     # Add more content for the about page as needed
-    cities = ct_boundary.city.values
-    city = st.sidebar.selectbox('Select city', cities)
-    check = st.sidebar.checkbox(f'check {city} city', key=f'city_{city}')
     
+    # time filter
+    dt = area["Time"].unique()
+    time = st.sidebar.selectbox('Day Time', sorted(dt))
+    
+    # week filter
+    wk = area["Type"].unique()
+    wk_time = st.sidebar.selectbox('Week type', sorted(wk))
+    
+    # city filter
+    ct_options = sorted(area["City"].unique())
+    city = st.sidebar.selectbox('Select city', ct_options)
+    
+    filtered_ct = ct_boundary[ct_boundary["city"].isin([city])]
+    
+
+    filtered_df = area[
+        (area["Time"].isin([time])) &
+        (area["Type"].isin([wk_time])) &
+        (area["City"].isin([city]))
+    ]
+   
+    # Initialize LeafMap instances
     m = leaf.Map(
         layers_control=True,
         draw_control=False,
         measure_control=False,
         fullscreen_control=False,
-        )
+    )
     m.add_basemap('CartoDB.DarkMatter')
+    # canvas layer
     m.add_gdf(
-        gdf=wk_am,
+        gdf=filtered_df,
         zoom_to_layer=False,
-        layer_name='sat_am',
+        layer_name=str(wk_time) + '_' + str(time),
         info_mode='on_click',
         style={'color': '#7fcdbb', 'fillOpacity': 0.3, 'weight': 0.8},
-        )
-    m.add_gdf(
-        gdf=wk_pm,
-        zoom_to_layer=False,
-        layer_name='sat_am',
-        info_mode='on_click',
-        style={'color': '#7fcdbb', 'fillOpacity': 0.3, 'weight': 0.8},
-        )
-    m.add_gdf(
-        gdf=sat_am,
-        zoom_to_layer=False,
-        layer_name='sat_am',
-        info_mode='on_click',
-        style={'color': '#7fcdbb', 'fillOpacity': 0.3, 'weight': 0.8},
-        )
-    m.add_gdf(
-        gdf=sat_pm,
-        zoom_to_layer=False,
-        layer_name='sat_am',
-        info_mode='on_click',
-        style={'color': '#7fcdbb', 'fillOpacity': 0.3, 'weight': 0.8},
-        )
-    m.add_gdf(
-        gdf=sun_am,
-        zoom_to_layer=False,
-        layer_name='sat_am',
-        info_mode='on_click',
-        style={'color': '#7fcdbb', 'fillOpacity': 0.3, 'weight': 0.8},
-        )
-    m.add_gdf(
-        gdf=sun_pm,
-        zoom_to_layer=False,
-        layer_name='sat_am',
-        info_mode='on_click',
-        style={'color': '#7fcdbb', 'fillOpacity': 0.3, 'weight': 0.8},
-        )
+    )
     if city:
         m.add_gdf(
-            gdf=ct_boundary,
+            gdf=filtered_ct,
             zoom_to_layer=False,
             layer_name='cities',
             info_mode=None,
             style={'color': '#225ea8', 'weight': 1.5},
         )
-
-    selected_gdf = ct_boundary[ct_boundary['city'] == city]
-
+    selected_gdf = ct_boundary[ct_boundary["city"] == city]
+    
     m.add_gdf(
         gdf=selected_gdf,
         layer_name='selected',
         zoom_to_layer=True,
         info_mode=None,
         style={'color': 'yellow', 'fill': None, 'weight': 2}
-     )
-    m.to_streamlit(600, 600)
+    )
+    m.to_streamlit(600, 400)
 
-
+    
 def page_compare():
-    st.title('Comparison')
-    
-    #st.set_page_config(page_title='Dashboard', page_icon=":de:", layout='wide')
-    st.markdown('<style>div.block-container{padding-top:1rem;}</style>',unsafe_allow_html=True)
-
-    st.header("Compare between morning and afternoon")
+    st.title('Comparison between city to city')
+    st.header("Compare")
+    st.markdown('<style>div.block-container{padding-top:1rem;}</style>', unsafe_allow_html=True)
     st.sidebar.write("Write the relevant text about what this page is for")
+    
     col1, col2 = st.columns((2))
-    #m1 = None  # Define m1 outside the col1 block
-    #m2 = None  # Define m2 outside the col2 block
-    
+
+    # time filter
     with col1:
-        morning = morning_df.time.values
-        time_morning = st.selectbox('Morning', morning)
+        dt1 = area["Time"].unique()
+        time1 = st.selectbox('Day Time 1', sorted(dt1))
     with col2:
-        noon = noon_df.time.values
-        time_noon = st.selectbox('Afternoon', noon)
+        dt2 = area["Time"].unique()
+        time2 = st.selectbox('Day Time 2', sorted(dt2))
+
+    # week filter
+    with col1:
+        wk1 = area["Type"].unique()
+        wk_time1 = st.selectbox('Week type 1', sorted(wk1))
+    with col2:
+        wk2 = area["Type"].unique()
+        wk_time2 = st.selectbox('Week type 2', sorted(wk2))
+
+    # city filter
+    with col1:
+        ct_options1 = sorted(area["City"].unique())
+        city1 = st.selectbox('Select city 1', ct_options1)
+    with col2:
+        ct_options2 = sorted(area["City"].unique()) 
+        city2 = st.selectbox('Select city 2', ct_options2)
         
-    with col1:
-        cities = ct_boundary.city.values
-        city = st.sidebar.selectbox('Select city 1', cities)
-        #overlay1 = st.sidebar.checkbox('Overlay city')
-        city_1 = st.sidebar.checkbox(f'check {city} city', key=f'city_1_{city}')
-        #city_stat = stat_df[stat_df['city'] == city]
+    filtered_ct1 = ct_boundary[ct_boundary["city"].isin([city1])]
+    filtered_ct2 = ct_boundary[ct_boundary["city"].isin([city2])]
+
+    filtered_df1 = area[
+        (area["Time"].isin([time1])) &
+        (area["Type"].isin([wk_time1])) &
+        (area["City"].isin([city1]))
+    ]
+
+    filtered_df2 = area[
+        (area["Time"].isin([time2])) &
+        (area["Type"].isin([wk_time2])) &
+        (area["City"].isin([city2]))
+    ]
+
+    filtered_df1 = filtered_df1.dropna(subset=['fi'])
+    filtered_df2 = filtered_df2.dropna(subset=['fi'])
     
-    with col2:
-        cities = ct_boundary.city.values
-        city = st.sidebar.selectbox('Select city 2', cities)
-        city_2 = st.sidebar.checkbox(f'check {city} city', key=f'city_2_{city}')
-        #overlay2 = st.sidebar.checkbox('Overlay city')
-        #city_stat = stat_df[stat_df['city'] == city]
-    
     with col1:
-        # First Map
-        st.subheader('During Morning')
+        st.subheader('Canvas 1')
+        # Initialize LeafMap instances
         m1 = leaf.Map(
             layers_control=True,
             draw_control=False,
@@ -170,54 +154,35 @@ def page_compare():
             fullscreen_control=False,
         )
         m1.add_basemap('CartoDB.DarkMatter')
-        # adding wk_am layer
+        # canvas layer
         m1.add_gdf(
-            gdf= wk_am,
+            gdf=filtered_df1,
             zoom_to_layer=False,
-            layer_name='wk_am',
+            layer_name=str(wk_time1) + '_' + str(time1),
             info_mode='on_click',
             style={'color': '#7fcdbb', 'fillOpacity': 0.3, 'weight': 0.8},
         )
-        # adding sat_am layer
-        m1.add_gdf(
-            gdf= sat_am,
-            zoom_to_layer=False,
-            layer_name='sat_am',
-            info_mode='on_click',
-            style={'color': '#759242', 'fillOpacity': 0.3, 'weight': 0.8},
-        )
-        # adding sun_am layer
-        m1.add_gdf(
-            gdf= sun_am,
-            zoom_to_layer=False,
-            layer_name='sun_am',
-            info_mode='on_click',
-            style={'color': '#A59CD3', 'fillOpacity': 0.3, 'weight': 0.8},
-        )
-
-        if city_1:
+        if city1:
             m1.add_gdf(
-                gdf=ct_boundary,
+                gdf=filtered_ct1,
                 zoom_to_layer=False,
                 layer_name='cities',
                 info_mode=None,
                 style={'color': '#225ea8', 'weight': 1.5},
             )
-
-        selected_gdf = ct_boundary[ct_boundary['city'] == city]
-
+        selected_gdf1 = ct_boundary[ct_boundary["city"] == city1]
+        
         m1.add_gdf(
-            gdf=selected_gdf,
+            gdf=selected_gdf1,
             layer_name='selected',
             zoom_to_layer=True,
             info_mode=None,
             style={'color': 'yellow', 'fill': None, 'weight': 2}
-         )
+        )
         m1.to_streamlit(450, 400)
 
     with col2:
-        # Second Map
-        st.subheader('During Aternoon')
+        st.subheader('Canvas 2')
         m2 = leaf.Map(
             layers_control=True,
             draw_control=False,
@@ -225,70 +190,50 @@ def page_compare():
             fullscreen_control=False,
         )
         m2.add_basemap('CartoDB.DarkMatter')
-        # adding wk_pm layer
+        # adding wk_am layer
         m2.add_gdf(
-            gdf= wk_pm,
+            gdf=filtered_df2,
             zoom_to_layer=False,
-            layer_name='wk_pm',
+            layer_name=str(wk_time2) + '_' + str(time2),
             info_mode='on_click',
             style={'color': '#7fcdbb', 'fillOpacity': 0.3, 'weight': 0.8},
         )
-        # adding sat_pm layer
-        m2.add_gdf(
-            gdf= sat_pm,
-            zoom_to_layer=False,
-            layer_name='sat_pm',
-            info_mode='on_click',
-            style={'color': '#759242', 'fillOpacity': 0.3, 'weight': 0.8},
-        )
-        # adding sun_pm layer
-        m2.add_gdf(
-            gdf= sun_pm,
-            zoom_to_layer=False,
-            layer_name='sun_pm',
-            info_mode='on_click',
-            style={'color': '#A59CD3', 'fillOpacity': 0.3, 'weight': 0.8},
-        )
-
-        if city_2:
+        if city2:
             m2.add_gdf(
-                gdf=ct_boundary,
+                gdf=filtered_ct2,
                 zoom_to_layer=False,
                 layer_name='cities',
                 info_mode=None,
                 style={'color': '#225ea8', 'weight': 1.5},
             )
-
-        selected_gdf = ct_boundary[ct_boundary['city'] == city]
-
+        selected_gdf2 = ct_boundary[ct_boundary["city"] == city2]
+        
         m2.add_gdf(
-            gdf=selected_gdf,
+            gdf=selected_gdf2,
             layer_name='selected',
             zoom_to_layer=True,
             info_mode=None,
             style={'color': 'yellow', 'fill': None, 'weight': 2}
-         )
+        )
         m2.to_streamlit(450, 400)
         
-        with col1:
-            fig, ax = plt.subplots()
-            stat_df.plot(kind='bar', ax=ax, color=['blue', 'red', 'green'],
-                ylabel='pti', xlabel='stattistics')
-            ax.get_xaxis().set_ticklabels([])
-            stats = st.pyplot(fig)
+    with col1:
+        st.subheader('Statistics of Canvas 1')
+        fig1 = go.Figure()
+        fig1.add_trace(go.Box(x=filtered_df1['fi'], boxmean=True))
+        fig1.update_layout(xaxis_title='pti')
+        fig1.update_layout(yaxis_title=str(wk_time1) + '_' + str(time1))
+        st.plotly_chart(fig1)
 
-        with col2:
-            fig, ax = plt.subplots()
-            stat_df.plot(kind='bar', ax=ax, color=['blue', 'red', 'green'],
-                ylabel='pti', xlabel='stattistics')
-            ax.get_xaxis().set_ticklabels([])
-            stats = st.pyplot(fig)
-#m1_streamlit = m1.to_streamlit(480, 500)
-#m2_streamlit = m2.to_streamlit(480, 500)
+    with col2:
+        st.subheader('Statistics of Canvas 2')
+        fig2 = go.Figure()
+        fig2.add_trace(go.Box(x=filtered_df2['fi'], boxmean=True))
+        fig2.update_layout(xaxis_title='pti')
+        fig2.update_layout(yaxis_title=str(wk_time2) + '_' + str(time2))
+        st.plotly_chart(fig2)
         
 def main():
-    st.set_page_config(page_title='Mobility Explorer', page_icon=":de:", layout='wide')
-
     st.sidebar.title('Navigation')
     page = st.sidebar.radio("Go to", ("About", "Data Explorer", "Compare"))
 
@@ -301,6 +246,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
-    
-    
