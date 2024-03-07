@@ -74,19 +74,11 @@ def data_explorer():
         info_mode='on_click',
         style={'color': '#7fcdbb', 'fillOpacity': 0.3, 'weight': 0.8},
     )
-    if city:
-        m.add_gdf(
-            gdf=filtered_ct,
-            zoom_to_layer=False,
-            layer_name='cities',
-            info_mode=None,
-            style={'color': '#225ea8', 'weight': 1.5},
-        )
     selected_gdf = ct_boundary[ct_boundary["city"] == city]
     
     m.add_gdf(
         gdf=selected_gdf,
-        layer_name='selected',
+        layer_name=str(city),
         zoom_to_layer=True,
         info_mode=None,
         style={'color': 'yellow', 'fill': None, 'weight': 2}
@@ -174,7 +166,7 @@ def page_compare():
         
         m1.add_gdf(
             gdf=selected_gdf1,
-            layer_name='selected',
+            layer_name=str(city1),
             zoom_to_layer=True,
             info_mode=None,
             style={'color': 'yellow', 'fill': None, 'weight': 2}
@@ -198,19 +190,11 @@ def page_compare():
             info_mode='on_click',
             style={'color': '#7fcdbb', 'fillOpacity': 0.3, 'weight': 0.8},
         )
-        if city2:
-            m2.add_gdf(
-                gdf=filtered_ct2,
-                zoom_to_layer=False,
-                layer_name='cities',
-                info_mode=None,
-                style={'color': '#225ea8', 'weight': 1.5},
-            )
         selected_gdf2 = ct_boundary[ct_boundary["city"] == city2]
         
         m2.add_gdf(
             gdf=selected_gdf2,
-            layer_name='selected',
+            layer_name=str(city2),
             zoom_to_layer=True,
             info_mode=None,
             style={'color': 'yellow', 'fill': None, 'weight': 2}
