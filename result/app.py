@@ -154,14 +154,6 @@ def page_compare():
             info_mode='on_click',
             style={'color': '#7fcdbb', 'fillOpacity': 0.3, 'weight': 0.8},
         )
-        if city1:
-            m1.add_gdf(
-                gdf=filtered_ct1,
-                zoom_to_layer=False,
-                layer_name='cities',
-                info_mode=None,
-                style={'color': '#225ea8', 'weight': 1.5},
-            )
         selected_gdf1 = ct_boundary[ct_boundary["city"] == city1]
         
         m1.add_gdf(
