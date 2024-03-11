@@ -67,7 +67,7 @@ def data_explorer():
     )
     m.add_basemap('CartoDB.DarkMatter')
     # canvas layer
-    m1.add_data(
+    m.add_data(
             filtered_df,
             column="fi",
             scheme="Quantiles",
