@@ -16,6 +16,20 @@ ct_boundary = gpd.read_file(f'{url}{ct_poly}')
 st.set_page_config(page_title='Mobility Explorer', page_icon=":globe_with_meridians:", layout='wide')
 st.markdown('<style>div.block-container{padding-top:1rem;}</style>', unsafe_allow_html=True)
 
+def page_about():
+    st.title('Home')
+    st.write("Welcome to Home Page!")
+    st.markdown('<style>div.block-container{padding-top:1rem;}</style>',unsafe_allow_html=True)
+    with st.expander("About"):
+        st.write(
+            """
+
+             This is where we will describe the purpose of the dashboard
+            """
+        )
+    st.sidebar.write("Write the relevant text about what this page is for")
+    # Add more content for the home page as needed
+
 def data_explorer():
     st.title('Data Explorer')
     st.markdown('<style>div.block-container{padding-top:1rem;}</style>',unsafe_allow_html=True)
@@ -35,8 +49,6 @@ def data_explorer():
     ct_options = sorted(area["City"].unique())
     city = st.sidebar.selectbox('Select city', ct_options)
     
-    
-
     filtered_df = area[
         (area["Time"].isin([time])) &
         (area["Type"].isin([wk_time])) &
