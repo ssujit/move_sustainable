@@ -143,8 +143,8 @@ def page_compare():
         m1.add_data(
             filtered_df1,
             column="fi",
-            scheme="Quantiles",
-            k = 4,
+            #scheme="Quantiles",
+            #k = 4,
             cmap="Blues",
             legend_title="Legend",
             zoom_to_layer=False,
@@ -175,8 +175,8 @@ def page_compare():
         m2.add_data(
             filtered_df2,
             column="fi",
-            scheme="Quantiles",
-            k = 4,
+            #scheme="Quantiles",
+            #k = 4,
             cmap="Blues",
             legend_title="Legend",
             zoom_to_layer=False,
