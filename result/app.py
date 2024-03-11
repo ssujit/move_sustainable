@@ -77,7 +77,7 @@ def data_explorer():
             zoom_to_layer=False,
             layer_name=str(wk_time1) + '_' + str(time1),
             info_mode='on_click',
-        )
+    )
     selected_gdf = ct_boundary[ct_boundary["city"] == city]
     
     m.add_gdf(
