@@ -67,13 +67,17 @@ def data_explorer():
     )
     m.add_basemap('CartoDB.DarkMatter')
     # canvas layer
-    m.add_gdf(
-        gdf=filtered_df,
-        zoom_to_layer=False,
-        layer_name=str(wk_time) + '_' + str(time),
-        info_mode='on_click',
-        style={'color': '#7fcdbb', 'fillOpacity': 0.3, 'weight': 0.8},
-    )
+    m1.add_data(
+            filtered_df,
+            column="fi",
+            scheme="Quantiles",
+            k = 4,
+            cmap="Blues",
+            legend_title="Legend",
+            zoom_to_layer=False,
+            layer_name=str(wk_time1) + '_' + str(time1),
+            info_mode='on_click',
+        )
     selected_gdf = ct_boundary[ct_boundary["city"] == city]
     
     m.add_gdf(
@@ -147,12 +151,16 @@ def page_compare():
         )
         m1.add_basemap('CartoDB.DarkMatter')
         # canvas layer
-        m1.add_gdf(
-            gdf=filtered_df1,
+        m1.add_data(
+            filtered_df1,
+            column="fi",
+            scheme="Quantiles",
+            k = 4,
+            cmap="Blues",
+            legend_title="Legend",
             zoom_to_layer=False,
             layer_name=str(wk_time1) + '_' + str(time1),
             info_mode='on_click',
-            style={'color': '#7fcdbb', 'fillOpacity': 0.3, 'weight': 0.8},
         )
         selected_gdf1 = ct_boundary[ct_boundary["city"] == city1]
         
@@ -175,12 +183,16 @@ def page_compare():
         )
         m2.add_basemap('CartoDB.DarkMatter')
         # adding wk_am layer
-        m2.add_gdf(
-            gdf=filtered_df2,
+        m2.add_data(
+            filtered_df2,
+            column="fi",
+            scheme="Quantiles",
+            k = 4,
+            cmap="Blues",
+            legend_title="Legend",
             zoom_to_layer=False,
-            layer_name=str(wk_time2) + '_' + str(time2),
+            layer_name=str(wk_time1) + '_' + str(time1),
             info_mode='on_click',
-            style={'color': '#7fcdbb', 'fillOpacity': 0.3, 'weight': 0.8},
         )
         selected_gdf2 = ct_boundary[ct_boundary["city"] == city2]
         
