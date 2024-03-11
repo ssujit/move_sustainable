@@ -81,7 +81,6 @@ def data_explorer():
         style={'color': 'yellow', 'fill': None, 'weight': 2}
     )
     m.to_streamlit(600, 400)
-
     
 def page_compare():
     st.title('Comparison between city to city')
@@ -115,7 +114,6 @@ def page_compare():
         ct_options2 = sorted(area["City"].unique()) 
         city2 = st.selectbox('Select city 2', ct_options2)
         
-
     filtered_df1 = area[
         (area["Time"].isin([time1])) &
         (area["Type"].isin([wk_time1])) &
@@ -130,7 +128,7 @@ def page_compare():
 
     filtered_df1 = filtered_df1.dropna(subset=['fi'])
     filtered_df2 = filtered_df2.dropna(subset=['fi'])
-     
+   
     with col1:
         st.subheader('Canvas 1')
         # Initialize LeafMap instances
@@ -157,7 +155,7 @@ def page_compare():
         
         m1.add_gdf(
             gdf=selected_gdf1,
-            layer_name=str(city2),
+            layer_name=str(city1),
             zoom_to_layer=True,
             info_mode=None,
             style={'color': 'yellow', 'fill': None, 'weight': 2}
@@ -182,7 +180,7 @@ def page_compare():
             cmap="Blues",
             legend_title="Legend",
             zoom_to_layer=False,
-            layer_name=str(wk_time1) + '_' + str(time1),
+            layer_name=str(wk_time2) + '_' + str(time2),
             info_mode='on_click',
         )
         selected_gdf2 = ct_boundary[ct_boundary["city"] == city2]
