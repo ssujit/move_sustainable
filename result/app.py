@@ -130,11 +130,7 @@ def page_compare():
 
     filtered_df1 = filtered_df1.dropna(subset=['fi'])
     filtered_df2 = filtered_df2.dropna(subset=['fi'])
-    
-    filtered_df1['category'] = pd.cut(filtered_df1['fi'], bins=3, labels=['Low', 'Medium', 'High'])
-    filtered_df2['category'] = pd.cut(filtered_df1['fi'], bins=3, labels=['Low', 'Medium', 'High'])
-    
-    
+     
     with col1:
         st.subheader('Canvas 1')
         # Initialize LeafMap instances
