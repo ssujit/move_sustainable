@@ -16,20 +16,6 @@ ct_boundary = gpd.read_file(f'{url}{ct_poly}')
 st.set_page_config(page_title='Mobility Explorer', page_icon=":globe_with_meridians:", layout='wide')
 st.markdown('<style>div.block-container{padding-top:1rem;}</style>', unsafe_allow_html=True)
 
-def page_about():
-    st.title('Home')
-    st.write("Welcome to Home Page!")
-    st.markdown('<style>div.block-container{padding-top:1rem;}</style>',unsafe_allow_html=True)
-    with st.expander("About"):
-        st.write(
-            """
-
-             This is where we will describe the purpose of the dashboard
-            """
-        )
-    st.sidebar.write("Write the relevant text about what this page is for")
-    # Add more content for the home page as needed
-
 def data_explorer():
     st.title('Data Explorer')
     st.markdown('<style>div.block-container{padding-top:1rem;}</style>',unsafe_allow_html=True)
@@ -49,7 +35,6 @@ def data_explorer():
     ct_options = sorted(area["City"].unique())
     city = st.sidebar.selectbox('Select city', ct_options)
     
-    filtered_ct = ct_boundary[ct_boundary["city"].isin([city])]
     
 
     filtered_df = area[
@@ -118,8 +103,6 @@ def page_compare():
         ct_options2 = sorted(area["City"].unique()) 
         city2 = st.selectbox('Select city 2', ct_options2)
         
-    filtered_ct1 = ct_boundary[ct_boundary["city"].isin([city1])]
-    filtered_ct2 = ct_boundary[ct_boundary["city"].isin([city2])]
 
     filtered_df1 = area[
         (area["Time"].isin([time1])) &
@@ -135,6 +118,10 @@ def page_compare():
 
     filtered_df1 = filtered_df1.dropna(subset=['fi'])
     filtered_df2 = filtered_df2.dropna(subset=['fi'])
+    
+    filtered_df1['category'] = pd.cut(filtered_df1['fi'], bins=3, labels=['Low', 'Medium', 'High'])
+    filtered_df2['category'] = pd.cut(filtered_df1['fi'], bins=3, labels=['Low', 'Medium', 'High'])
+    
     
     with col1:
         st.subheader('Canvas 1')
@@ -162,7 +149,7 @@ def page_compare():
         
         m1.add_gdf(
             gdf=selected_gdf1,
-            layer_name=str(city1),
+            layer_name=str(city2),
             zoom_to_layer=True,
             info_mode=None,
             style={'color': 'yellow', 'fill': None, 'weight': 2}
