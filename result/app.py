@@ -14,6 +14,7 @@ area = gpd.read_file(f'{url}{pti_data}')
 ct_boundary = gpd.read_file(f'{url}{ct_poly}')
 
 st.set_page_config(page_title='Mobility Explorer', page_icon=":globe_with_meridians:", layout='wide')
+
 st.markdown('<style>div.block-container{padding-top:1rem;}</style>', unsafe_allow_html=True)
 
 def page_about():
@@ -81,6 +82,7 @@ def data_explorer():
         style={'color': 'yellow', 'fill': None, 'weight': 2}
     )
     m.to_streamlit(600, 400)
+
     
 def page_compare():
     st.title('Comparison between city to city')
@@ -114,6 +116,7 @@ def page_compare():
         ct_options2 = sorted(area["City"].unique()) 
         city2 = st.selectbox('Select city 2', ct_options2)
         
+
     filtered_df1 = area[
         (area["Time"].isin([time1])) &
         (area["Type"].isin([wk_time1])) &
@@ -128,7 +131,8 @@ def page_compare():
 
     filtered_df1 = filtered_df1.dropna(subset=['fi'])
     filtered_df2 = filtered_df2.dropna(subset=['fi'])
-   
+
+    
     with col1:
         st.subheader('Canvas 1')
         # Initialize LeafMap instances
@@ -209,7 +213,7 @@ def page_compare():
         fig2.update_layout(xaxis_title='pti')
         fig2.update_layout(yaxis_title=str(wk_time2) + '_' + str(time2))
         st.plotly_chart(fig2)
-        
+
 def main():
     st.sidebar.title('Navigation')
     page = st.sidebar.radio("Go to", ("About", "Data Explorer", "Compare"))
