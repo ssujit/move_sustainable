@@ -1,5 +1,6 @@
 streamlit==1.31.1
 geopandas==0.14.0
+mapclassify==2.6.1
 streamlit-folium==0.15.0
 pandas==2.1.1
 leafmap==0.27.1
