@@ -147,7 +147,10 @@ def page_compare():
         m1.add_data(
             filtered_df1,
             column="fi",
+            scheme="JenksCaspall",
+            k=4,
             cmap="Blues",
+            add_legend=True,
             legend_title="Legend",
             zoom_to_layer=False,
             layer_name=str(wk_time1) + '_' + str(time1),
@@ -171,13 +174,16 @@ def page_compare():
             draw_control=False,
             measure_control=False,
             fullscreen_control=False,
-        )
+            )
         m2.add_basemap('CartoDB.DarkMatter')
         # adding wk_am layer
         m2.add_data(
             filtered_df2,
             column="fi",
+            scheme="JenksCaspall",
+            k=4,
             cmap="Blues",
+            add_legend=True,
             legend_title="Legend",
             zoom_to_layer=False,
             layer_name=str(wk_time2) + '_' + str(time2),
