@@ -68,6 +68,7 @@ def data_explorer():
     # canvas layer
     m.add_data(
         filtered_df,
+        column="fi",
         scheme="JenksCaspall",
         k=4,
         cmap="Blues",
