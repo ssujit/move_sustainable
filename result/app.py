@@ -66,17 +66,12 @@ def data_explorer():
     m.add_basemap('CartoDB.DarkMatter')
     
     # canvas layer
-    m.add_data(
-        filtered_df,
-        column="fi",
-        scheme="JenksCaspall",
-        k=4,
-        cmap="Blues",
-        add_legend=True,
-        legend_title="Legend",
+    m.add_gdf(
+        gdf=filtered_df,
         zoom_to_layer=False,
         layer_name=str(wk_time) + '_' + str(time),
         info_mode='on_click',
+        style={'color': '#7fcdbb', 'fillOpacity': 0.3, 'weight': 0.8},
     )
     selected_gdf = ct_boundary[ct_boundary["city"] == city]
     
