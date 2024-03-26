@@ -38,6 +38,10 @@ def data_explorer():
     st.write("This is where you can learn more about the Mobility Explorer.")
     # Add more content for the about page as needed
     
+    # city filter
+    ct_options = sorted(area["City"].unique())
+    city = st.sidebar.selectbox('Select city', ct_options)
+    
     # time filter
     dt = area["Time"].unique()
     time = st.sidebar.selectbox('Day Time', sorted(dt))
@@ -45,10 +49,6 @@ def data_explorer():
     # week filter
     wk = area["Type"].unique()
     wk_time = st.sidebar.selectbox('Week type', sorted(wk))
-    
-    # city filter
-    ct_options = sorted(area["City"].unique())
-    city = st.sidebar.selectbox('Select city', ct_options)
     
     filtered_df = area[
         (area["Time"].isin([time])) &
