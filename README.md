@@ -15,7 +15,7 @@ Primary data for this study is the open public transit feed data (GTFS). The GTF
 ## Structure of the Collected GTFS Data
 It is seen from Table 2 that each of the collected GTFS dataset has 7 .txt files, apart from them GTFS data also have feed_info.txt file. Details of each file are given below:
 ### Table 2: Structure of the GTFS Files
-|**File** | **Field 1**| ** Field 2** | ** Field 3** | ** Field 4** |**Field 5**| ** Field 6** | ** Field 7** | ** Field 8** | ** Field 9** | ** Field 10** |
+|**File** | **Field 1**| **Field 2** | **Field 3** | **Field 4** |**Field 5**| **Field 6** | **Field 7** | **Field 8** | **Field 9** | **Field 10** |
 |:---:| :---:|:---:|:---:|:---:|:---:| :---:|:---:|:---:|:---:|:---:| 
 
 
