@@ -1,5 +1,5 @@
-# About this 
-this a repository for visualization of public transit in Germany
+# About 
+This repository hosts the code and resources for public transit visualization, a streamlit cloud-based dashboard designed to explore the mobility in public transit service frequency using GTFS data of Germany. It includes the graphical model builder tool of QGIS for processing raw GTFS data, generating Distance Indicators, and implementing Local Moran's Index for spatial analysis using python.
 # Data
 ## GTFS
  
