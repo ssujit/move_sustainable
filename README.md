@@ -12,7 +12,11 @@ Primary data for this study is the open public transit feed data (GTFS). The GTF
 | Local transit Germany |181|1,3 M|460 K| July 10, 2022|
 | Regional trains Germany|6,7|64 K|15 K| July 10, 2022|
 
-
+## Structure of the Collected GTFS Data
+It is seen from Table 2 that each of the collected GTFS dataset has 7 .txt files, apart from them GTFS data also have feed_info.txt file. Details of each file are given below:
+### Table 2: Structure of the GTFS Files
+|**File** | **Field 1**| ** Field 2** | ** Field 3** | ** Field 4** |**Field 5**| ** Field 6** | ** Field 7** | ** Field 8** | ** Field 9** | ** Field 10** |
+|:---:| :---:|:---:|:---:|:---:|:---:| :---:|:---:|:---:|:---:|:---:| 
 
 
 # Jupyternotebooks
