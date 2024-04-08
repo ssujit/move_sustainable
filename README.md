@@ -8,7 +8,7 @@ Primary data for this study is the open public transit feed data (GTFS). The GTF
 ### Table 1: Properties of the Collected GTFS Data
 
 |Feed Name | File size (MB)| Unique trips | Stops | Date |
-|---      | ---       | ---       | ---   |---  | 
+|:---:| :---:|:---:|:---:|:---:| 
 | Local transit Germany |181|1,3 M|460 K| July 10, 2022|
 | Regional trains Germany|6,7|64 K|15 K| July 10, 2022|
 
