@@ -18,7 +18,7 @@ It is seen from Table 2 that each of the collected GTFS dataset has 7 .txt files
 |**File** | **Field 1**| **Field 2** | **Field 3** | **Field 4** |**Field 5**| **Field 6** | **Field 7** | **Field 8** | **Field 9** | **Field 10** |
 |:---:| :---:|:---:|:---:|:---:|:---:| :---:|:---:|:---:|:---:|:---:|
 |agency.txt|agency_id|agency_name|agency_url|agency_timezone||| ||||
-|calendar.txt|monday|tuesday|wednesday|thursday|friday|saturday|sunday||||
+|calendar.txt|monday|tuesday|wednesday|thursday|friday|saturday|sunday|start_date|end_date|service_id|
 |calendar_dates.txt|service_id|extension_type|date||||||||
 |routes.txt|route_long_name|route_short_name|agency_id|route_type|route_id||||||
 |stop_times.txt|trip_id|arrival_time|departure_time|stop_id|stop_sequence|pickup_type|drop_off_type||||
