@@ -34,6 +34,15 @@ It is seen from Table 2 that each of the collected GTFS dataset has 7 .txt files
 **routes.txt:** This file group trips into single services that are shown to users. The route_type field holds the mode of the transportation used for that route. Different route types available in the collected GTFS data are as follows:
 
 
+# Classification of cities 
+Definition of Urban population by city size - OECD countries are classified as: 
+1. large metropolitan areas if they have a population of 1.5 million or more 
+2. metropolitan areas if their population is between 500,000 and 1.5 million 
+3. medium-size urban areas if their population is between 200,000 and 500,000
+4. small urban areas if their population is between 50,000 and 200,000
+   
+Source: OECD (2024), Urban population by city size (indicator). doi: 10.1787/b4332f92-en (Accessed on 08 May 2024), https://data.oecd.org/popregion/urban-population-by-city-size.htm
+
 
 # Jupyternotebooks
 ## Notebooks 
