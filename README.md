@@ -1,6 +1,34 @@
 # About 
 This repository hosts the code and resources for public transit visualization, a streamlit cloud-based dashboard designed to explore the mobility in public transit service frequency using GTFS data of Germany. It includes the graphical model builder tool of QGIS for processing raw GTFS data, generating Distance Indicators, and implementing Local Moran's Index for spatial analysis using python.
-# Data
+
+
+# Reading data
+
+## Layer data folder: 
+- each directory contains six uniques datafiles 
+- Dataformat: geopackage (.gpkg) only
+- Raster grid size: 1 KM
+- folder name: xx (city id) + yy (city name)
+- file name: xx ( day) + yy (time) _+ zz (city name)
+- wk_am = weekdays peak-traffic morning hours (6:00-8:59) 
+- wk_am: weekdays peak-traffic afternoon hours (14:00-16:59)
+- sat_am = Saturday peak-traffic morning hours (6:00-8:59) 
+- sat_pm = Saturday peak-traffic afternoon hours (14:00-16:59)
+- sun_am = Saturday peak-traffic morning hours (6:00-8:59)
+- sun_pm = Saturday peak-traffic afternoon hours (14:00-16:59)
+
+### Field names
+
+
+
+## Other folder
+- contains additional elements, informations and data about the layer data
+- city_id_type_matching_table.csv: helps to find unique city id-wise relations with other data sources and classification of city types
+- Notebooks: interactive Jupyternotebooks used for understanding data and ready to use workflow with the data and demo analysis
+
+
+# Data Source
+
 ## GTFS
  
 Primary data for this study is the open public transit feed data (GTFS). The GTFS data was collectedfrom (https://gtfs.de/de/feeds). They offer 3 different types of data for Germany. These are: 1) Long Distance Rail 2) Local Transit and 3) Regional Rail. For the current study local transit and regional rail data were downloaded. This data comes in .zip format. GTFS data of Germany contains 8 text files in .txt format. Table 1 shows details information of each text file. Though, it was supposed to be updated every week, author noticed during the study period same data was provided until 10.08.2022.
@@ -55,3 +83,5 @@ Source: OECD (2024), Urban population by city size (indicator). doi: 10.1787/b43
 
 # Demo Dashboard
 Explore: [https://move-sustainable.streamlit.app](https://move-sustainable.streamlit.app) 
+
+
